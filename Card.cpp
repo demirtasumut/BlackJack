@@ -25,7 +25,9 @@ string Card::toString() {
 
 string Card::toStringFace() {
     char c = '0' + this->getFace();
-    return string(c);
+    string s;
+    s += c;
+    return s;
 }
 
 string Card::toStringNum() {
@@ -46,7 +48,7 @@ string Card::toStringNum() {
             s = string("K");
             break;
         default:
-            s = string(num);
+            s = to_string(num);
     }
 
     return s;

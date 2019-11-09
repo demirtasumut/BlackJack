@@ -5,7 +5,9 @@
 #ifndef BLACKJACK_CARD_H
 #define BLACKJACK_CARD_H
 
+#include <string>
 
+using namespace std;
 enum Face {
     HEARTS = 3,     //kupa
     DIAMONDS,   //karo
@@ -19,15 +21,12 @@ private:
     enum Face face;
 
     string toStringFace();
-
     string toStringNum();
 public:
     Card(int, enum Face);
 
     int getNum();
-
     int getFace();
-
     string toString();
 };
 

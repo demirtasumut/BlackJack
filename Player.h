@@ -5,6 +5,7 @@
 #ifndef BLACKJACK_PLAYER_H
 #define BLACKJACK_PLAYER_H
 
+#include <iostream>
 #include <list>
 #include "Card.h"
 

@@ -4,6 +4,7 @@
 
 #include "Player.h"
 
+
 void Player::printHand() {
     auto c = hand.begin();
     for (; c != hand.end(); c++)

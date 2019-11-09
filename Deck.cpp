@@ -5,7 +5,7 @@
 #include "Deck.h"
 
 Card Deck::getRandomCard() {
-    Card c;
+    Card c(0, SPADES);
     return c;
 }
 
