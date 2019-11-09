@@ -2,24 +2,22 @@
 // Created by Umut on 8.11.2019.
 //
 
-#ifndef BLACKJACK_HAND_H
-#define BLACKJACK_HAND_H
+#ifndef BLACKJACK_DECK_H
+#define BLACKJACK_DECK_H
 
 #include <list>
 #include "Card.h"
 
 using namespace std;
 
-class Hand {
+class Deck {
 private:
     list<Card> cards;
 public:
-    Hand();
-
+    Deck();
     void resetHand();
-
     Card getRandomCard();
 };
 
 
-#endif //BLACKJACK_HAND_H
+#endif //BLACKJACK_DECK_H

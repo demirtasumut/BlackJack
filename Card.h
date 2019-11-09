@@ -6,24 +6,29 @@
 #define BLACKJACK_CARD_H
 
 
-enum Type {
-    CLUB = 0,
-    DIAMONDS,
-    HEARTS,
-    SPADES,
+enum Face {
+    HEARTS = 3,     //kupa
+    DIAMONDS,   //karo
+    CLUB,   //sinek
+    SPADES,     //maca
 };
 
 class Card {
 private:
     int num;
-    enum Type type;
+    enum Face face;
 
+    string toStringFace();
+
+    string toStringNum();
 public:
-    Card(int, enum Type);
+    Card(int, enum Face);
 
     int getNum();
 
-    int getType();
+    int getFace();
+
+    string toString();
 };
 
 
