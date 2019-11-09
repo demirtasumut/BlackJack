@@ -5,18 +5,20 @@
 #ifndef BLACKJACK_DECK_H
 #define BLACKJACK_DECK_H
 
-#include <list>
+#include <vector>
+#include <algorithm>
 #include "Card.h"
 
 using namespace std;
 
 class Deck {
 private:
-    list<Card> cards;
+    vector<Card *> cards;
 public:
     Deck();
     void resetHand();
-    Card getRandomCard();
+
+    Card *getRandomCard();
 };
 
 

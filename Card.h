@@ -10,9 +10,9 @@
 using namespace std;
 enum Face {
     HEARTS = 3,     //kupa
-    DIAMONDS,   //karo
-    CLUB,   //sinek
-    SPADES,     //maca
+    DIAMONDS,       //karo
+    CLUB,           //sinek
+    SPADES,         //maca
 };
 
 class Card {
