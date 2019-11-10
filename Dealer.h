@@ -6,10 +6,20 @@
 #define BLACKJACK_DEALER_H
 
 
+#include "Player.h"
+#include "Deck.h"
+
 class Dealer {
 private:
-
+    Deck deck;
 public:
+    void setCards(Player *pPlayer, int playerCount);
+
+    void openHand();
+
+    int getTotal();
+
+    Card *getCard();
 };
 
 
