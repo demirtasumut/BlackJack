@@ -10,7 +10,6 @@ int main() {
     srand(unsigned(time(nullptr)));
     auto *blackJack = new BlackJack();
 
-    cout << "Hello, World!" << std::endl;
     blackJack->play();
     delete blackJack;
 

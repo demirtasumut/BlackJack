@@ -6,52 +6,70 @@
 
 #define INITIAL_CHIPS 100
 
-void Player::printHand() {
-
-    for (auto &c : hand)
-        cout << c->toString() << " ";
-
-}
-
 Player::Player() {
     chips = INITIAL_CHIPS;
     currentBet = 0;
     total = 0;
 }
 
-int Player::getTotal() {
-    int total = 0;
+void Player::printHand() {
+    cout << getName() << " hand: ";
+    for (auto &c : hand)
+        cout << c->toString() << " ";
+    cout << "Total:" << getHandTotal() << endl;
+}
+
+int Player::getHandTotal() {
+    total = 0;
     for (auto &c : hand)
         total += c->getNum();
 
     return total;
 }
 
-void Player::bet() {
-
+bool Player::bet(int b) {
+    if (getChipsTotal() < b)
+        return false;
+    currentBet = b;
+    chips -= b;
+    return true;
 }
 
-int Player::move(const string &letter) {
-    (void) letter;
-    return 0;
+char Player::move(const string &letter) {
+    cout << "Hi " << getName() << "! Hit or Stand? " << endl;
+    return utils::readSelection(letter);
 }
 
 bool Player::getResult(int dealerHand) {
-    return getTotal() >= dealerHand;
+    return getHandTotal() >= dealerHand;
 }
 
 void Player::hit(Card *pCard) {
-    (void) pCard;
+    hand.push_back(pCard);
+    total += pCard->getNum();
 }
 
 void Player::printResult() {
 
 }
 
-bool Player::isactive() {
+bool Player::isPlaying() {
     return false;
 }
 
-void Player::setActive() {
+void Player::setResults() {
 
 }
+
+int Player::getChipsTotal() {
+    return chips;
+}
+
+string Player::getName() {
+    return name;
+}
+
+void Player::setName(string n) {
+    name = n;
+}
+

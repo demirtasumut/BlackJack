@@ -14,7 +14,10 @@ int Card::getFace() {
 }
 
 int Card::getNum() {
-    return num;
+    if (num < 11)
+        return num;
+    else
+        return 10;
 }
 
 string Card::toString() {
@@ -24,9 +27,26 @@ string Card::toString() {
 }
 
 string Card::toStringFace() {
-    char c = '0' + this->getFace();
+
     string s;
-    s += c;
+
+    switch (getFace()) {
+        case SPADES:
+            s = "\xE2\x99\xA0";
+            break;
+        case CLUB:
+            s = "\xE2\x99\xA3";
+            break;
+        case HEARTS:
+            s = "\xE2\x99\xA5";
+            break;
+        case DIAMONDS:
+            s = "\xE2\x99\xA6";
+            break;
+        default:
+            s = "";
+            break;
+    }
     return s;
 }
 

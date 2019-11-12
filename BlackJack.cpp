@@ -8,13 +8,13 @@
 BlackJack::BlackJack() = default;
 
 void BlackJack::play() {
-    bool repeatGame = true;
+    bool playGame = true;
 
     this->printGameInfo();
 
     do {
         cout << "New Game(N) or Exit(X)" << endl;
-        char c = this->readSelection("NnXx");
+        char c = utils::readSelection("NnXxt");
 
         switch (c) {
             case 'N':
@@ -23,11 +23,14 @@ void BlackJack::play() {
                 break;
             case 'X':
             case 'x':
-                repeatGame = false;
+                playGame = false;
+            case 't':
+                test();
+                break;
             default:
                 break;
         }
-    } while (repeatGame);
+    } while (playGame);
 }
 
 void BlackJack::printGameInfo() {
@@ -37,36 +40,39 @@ void BlackJack::printGameInfo() {
     cout << "Have fun!!" << endl;
 }
 
-char BlackJack::readSelection(const string &letter) {
-    string s;
-    do {
-        cout << "Please Select:" << endl;
-        cin >> s;
-        if (s.length() > 1
-            || s.find_first_not_of(letter) != string::npos
-                )
-            cout << "Wrong Selection Try again";
-        else
-            break;
-    } while (true);
-    return s[0];
-}
-
 void BlackJack::game() {
-    cout << "How many player you will play?" << endl;
-    char pc = this->readSelection("1234567");
-    int playerCount = pc - '0', selection, dealerHand;
+    int playerCount, selection, dealerHand, bet;
     bool finish = false;
+    char pc;
+    string name;
+
+    cout << "How many player you will play? (1-7)" << endl;
+    pc = utils::readSelection("1234567");
+    playerCount = pc - '0';
+
+    for (int i = 0; i < playerCount; i++) {
+        cout << "Please enter Player" << i + 1 << " name:";
+        cin >> name;
+        players[i].setName(name);
+    }
     do {
         for (int i = 0; i < playerCount; i++) {
-            this->players[i].bet();
+            if (players[i].getChipsTotal())  //if player has still chips
+                cout << "Hi " << players[i].getName() << "! How much you want to bet? (min 1, max "
+                     << players[i].getChipsTotal() << "):";
+            cin >> bet;
+            while (!players[i].bet(bet)) {
+                cout << "Hi " << players[i].getName() << "! You can't bet " << bet << ". Please try again";
+                cin >> bet;
+            }
         }
 
-        this->dealer.setCards(this->players, playerCount);
-
+        dealer.setCards(players, playerCount);
+        dealer.printOneCard();
         for (int i = 0; i < playerCount; i++) {
-            if (!players[i].isactive())
-                continue;
+
+            players[i].printHand();
+
             selection = players[i].move("hHsS");
             switch (selection) {
                 case 'h':
@@ -83,12 +89,18 @@ void BlackJack::game() {
             }
         }
         dealer.openHand();
-        dealerHand = dealer.getTotal();
+        dealerHand = dealer.getHandTotal();
         for (int i = 0; i < playerCount; i++) {
             finish |= players[i].getResult(dealerHand);
             players[i].printResult();
-            players[i].setActive();
+            players[i].setResults();
         }
     } while (finish);
+
+}
+
+void BlackJack::test() {
+
+    dealer.testDealer();
 
 }

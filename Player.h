@@ -13,30 +13,36 @@ using namespace std;
 
 class Player {
 private:
-    list<Card *> hand;
     int chips;
     int currentBet;
     int total;
+protected:
+    string name;
+    list<Card *> hand;
 
     void updateChips(int c);
 public:
     Player();
 
-    int move(const string &letter);
-    int getTotal();
+    char move(const string &letter);
+
+    int getHandTotal();
     void printHand();
 
-    void bet();
-
+    bool bet(int b);
     bool getResult(int dealerHand);
-
     void hit(Card *pCard);
-
     void printResult();
 
-    bool isactive();
+    bool isPlaying();
 
-    void setActive();
+    void setResults();
+
+    int getChipsTotal();
+
+    string getName();
+
+    void setName(string basicString);
 };
 
 

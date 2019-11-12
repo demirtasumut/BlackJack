@@ -7,6 +7,8 @@
 
 #include <vector>
 #include <algorithm>
+#include <iostream>
+#include <random>
 #include "Card.h"
 
 using namespace std;
@@ -19,6 +21,8 @@ public:
     void resetHand();
 
     Card *getRandomCard();
+
+    void testDeck();
 };
 
 

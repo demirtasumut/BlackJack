@@ -6,9 +6,8 @@
 #define BLACKJACK_BLACKJACK_H
 
 #include <iostream>
-#include "Player.h"
 #include "Dealer.h"
-#include "Deck.h"
+
 
 #define MAX_PLAYER_COUNT 7
 
@@ -19,17 +18,15 @@ private:
     Player players[MAX_PLAYER_COUNT];
     Dealer dealer;
 
-
     void printGameInfo();
-
-    char readSelection(const string &letter);
-
     void game();
 
 public:
     BlackJack();
 
     void play();
+
+    void test();
 };
 
 

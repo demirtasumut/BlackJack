@@ -6,6 +6,7 @@
 #define BLACKJACK_CARD_H
 
 #include <string>
+#include "utils.h"
 
 using namespace std;
 enum Face {

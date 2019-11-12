@@ -9,17 +9,19 @@
 #include "Player.h"
 #include "Deck.h"
 
-class Dealer {
+class Dealer : public Player {
 private:
     Deck deck;
 public:
-    void setCards(Player *pPlayer, int playerCount);
+    Dealer();
 
+    void setCards(Player *pPlayers, int playerCount);
     void openHand();
-
-    int getTotal();
-
     Card *getCard();
+
+    void testDealer();
+
+    void printOneCard();
 };
 
 
