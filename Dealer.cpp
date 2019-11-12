@@ -2,20 +2,35 @@
 // Created by Umut on 8.11.2019.
 //
 
+#include <thread>
+#include <chrono>
 #include "Dealer.h"
 
+#define DEALER_HIT_LIMIT 17
+#define WAIT_DEALER 1
 
 Dealer::Dealer() {
     name = "Dealer";
 }
 
-void Dealer::openHand() {
+int Dealer::openHand() {
 
+    while (getHandTotal() < DEALER_HIT_LIMIT)
+        hand.push_back(deck.getRandomCard());
+
+    chrono::duration<int, std::milli> timespan(WAIT_DEALER * 1000);
+    cout << getName() << " hand: ";
+    for (auto &c : hand) {
+        cout << c->toString() << " " << flush;
+        this_thread::sleep_for(timespan);   //make it handsome :)
+    }
+    cout << "Total: " << getHandTotal() << endl;
+    return getHandTotal();
 }
 
 
 Card *Dealer::getCard() {
-    return nullptr;
+    return deck.getRandomCard();
 }
 
 void Dealer::setCards(Player *players, int playerCount) {

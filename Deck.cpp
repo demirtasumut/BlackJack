@@ -7,10 +7,14 @@
 
 Card *Deck::getRandomCard() {
     Card *c = nullptr;
+
     if (!cards.empty()) {
-        c = cards[cards.size() - 1];
-        cards.pop_back();
+        resetHand();
     }
+
+    c = cards[cards.size() - 1];
+    cards.pop_back();
+
     return c;
 }
 

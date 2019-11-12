@@ -4,6 +4,7 @@
 
 #include "BlackJack.h"
 
+#define BLACKJACK_LIMIT 21
 
 BlackJack::BlackJack() = default;
 
@@ -41,9 +42,9 @@ void BlackJack::printGameInfo() {
 }
 
 void BlackJack::game() {
-    int playerCount, selection, dealerHand, bet;
+    int playerCount, dealerHand;
     bool finish = false;
-    char pc;
+    char pc, selection;
     string name;
 
     cout << "How many player you will play? (1-7)" << endl;
@@ -56,44 +57,37 @@ void BlackJack::game() {
         players[i].setName(name);
     }
     do {
-        for (int i = 0; i < playerCount; i++) {
-            if (players[i].getChipsTotal())  //if player has still chips
-                cout << "Hi " << players[i].getName() << "! How much you want to bet? (min 1, max "
-                     << players[i].getChipsTotal() << "):";
-            cin >> bet;
-            while (!players[i].bet(bet)) {
-                cout << "Hi " << players[i].getName() << "! You can't bet " << bet << ". Please try again";
-                cin >> bet;
-            }
-        }
+
+        betPlayers(playerCount);
 
         dealer.setCards(players, playerCount);
         dealer.printOneCard();
+
+        printPlayersHand(playerCount);
+
         for (int i = 0; i < playerCount; i++) {
-
-            players[i].printHand();
-
-            selection = players[i].move("hHsS");
-            switch (selection) {
-                case 'h':
-                case 'H':
-                    players[i].hit(dealer.getCard());
-                    players[i].printHand();
-                    i--;        //it is hit. So the player may want to hit more
-                    break;
-                case 's':
-                case 'S':
-                    break;
-                default:
-                    break;
+            if (players[i].getChipsTotal() + players[i].getBet()) {    //is player still on the game
+                do {
+                    selection = players[i].move("hHsS");
+                    switch (selection) {
+                        case 'h':
+                        case 'H':
+                            players[i].hit(dealer.getCard());
+                            players[i].printHand();
+                            break;
+                        case 's':
+                        case 'S':
+                            break;
+                        default:
+                            break;
+                    }
+                } while (players[i].getHandTotal() < BLACKJACK_LIMIT && selection != 's' && selection != 'S');
             }
         }
-        dealer.openHand();
-        dealerHand = dealer.getHandTotal();
+        dealerHand = dealer.openHand();
+
         for (int i = 0; i < playerCount; i++) {
             finish |= players[i].getResult(dealerHand);
-            players[i].printResult();
-            players[i].setResults();
         }
     } while (finish);
 
@@ -103,4 +97,28 @@ void BlackJack::test() {
 
     dealer.testDealer();
 
+}
+
+void BlackJack::printPlayersHand(int playerCount) {
+    for (int i = 0; i < playerCount; i++) {
+        if (players[i].getChipsTotal() + players[i].getBet())    //is player still on the game
+            players[i].printHand();
+    }
+}
+
+void BlackJack::betPlayers(int playerCount) {
+    int bet;
+
+    for (int i = 0; i < playerCount; i++) {
+        if (players[i].getChipsTotal()) {  //if player has still chips
+            cout << "Hi " << players[i].getName() << "! How much you want to bet? (min 1, max "
+                 << players[i].getChipsTotal() << "):";
+            cin >> bet;
+            while (!players[i].bet(bet)) {
+                cout << "Hi " << players[i].getName() << "! You can't bet " << bet << ". Please try again";
+                cin >> bet;
+            }
+            players[i].setBet(bet);
+        }
+    }
 }

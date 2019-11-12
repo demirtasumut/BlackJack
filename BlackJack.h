@@ -27,6 +27,10 @@ public:
     void play();
 
     void test();
+
+    void printPlayersHand(int playerCount);
+
+    void betPlayers(int count);
 };
 
 

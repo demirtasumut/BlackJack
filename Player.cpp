@@ -10,6 +10,7 @@ Player::Player() {
     chips = INITIAL_CHIPS;
     currentBet = 0;
     total = 0;
+    status = 0;
 }
 
 void Player::printHand() {
@@ -41,7 +42,13 @@ char Player::move(const string &letter) {
 }
 
 bool Player::getResult(int dealerHand) {
-    return getHandTotal() >= dealerHand;
+
+
+    setResults(dealerHand);
+    printResult();
+    resetHand();
+
+    return getChipsTotal() > 0;
 }
 
 void Player::hit(Card *pCard) {
@@ -50,15 +57,40 @@ void Player::hit(Card *pCard) {
 }
 
 void Player::printResult() {
-
+    cout << "Hi " << getName() << " ";
+    switch (status) {
+        case -1:
+            cout << "You lost!" << endl;
+            break;
+        case 0:
+            cout << "It is a draw!" << endl;
+            break;
+        case 1:
+            cout << "You win!" << endl;
+            break;
+        default:
+            break;
+    }
 }
 
-bool Player::isPlaying() {
-    return false;
-}
+void Player::setResults(int dealerTotal) {
 
-void Player::setResults() {
+    if (dealerTotal > 21) {
+        chips += 2 * getBet();
+        status = 1;
+    } else if (getHandTotal() > 21) {
+        status = -1;
+    } else if (getHandTotal() == dealerTotal) {
+        chips += getBet();
+        status = 0;
+    } else if (getHandTotal() > dealerTotal) {
+        chips += 2 * getBet();
+        status = 1;
+    } else {
+        status = -1;
+    }
 
+    setBet(0);
 }
 
 int Player::getChipsTotal() {
@@ -71,5 +103,24 @@ string Player::getName() {
 
 void Player::setName(string n) {
     name = n;
+}
+
+void Player::resetHand() {
+    Card *c;
+
+    for (auto &card : hand) {
+        c = card;
+        delete c;
+    }
+    hand.clear();
+
+}
+
+void Player::setBet(int b) {
+    currentBet = b;
+}
+
+int Player::getBet() {
+    return currentBet;
 }
 

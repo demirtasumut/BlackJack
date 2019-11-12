@@ -16,7 +16,8 @@ public:
     Dealer();
 
     void setCards(Player *pPlayers, int playerCount);
-    void openHand();
+
+    int openHand();
     Card *getCard();
 
     void testDealer();

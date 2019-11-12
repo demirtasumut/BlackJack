@@ -19,7 +19,7 @@ private:
 protected:
     string name;
     list<Card *> hand;
-
+    int status;
     void updateChips(int c);
 public:
     Player();
@@ -34,15 +34,19 @@ public:
     void hit(Card *pCard);
     void printResult();
 
-    bool isPlaying();
-
-    void setResults();
+    void setResults(int i);
 
     int getChipsTotal();
 
     string getName();
 
     void setName(string basicString);
+
+    void resetHand();
+
+    void setBet(int b);
+
+    int getBet();
 };
 
 
