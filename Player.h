@@ -22,6 +22,8 @@ protected:
     string name;
     list<Card *> hand;
     int status;
+    int gotA;
+    int increaseTotal;
 public:
     Player();
 

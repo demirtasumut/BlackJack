@@ -33,6 +33,10 @@ public:
     void betPlayers(int count);
 
     void resetPlayers(int playerCount);
+
+    bool checPlayersStatus(int playerCount);
+
+    bool checkForContinue(int playerCount);
 };
 
 

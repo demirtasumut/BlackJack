@@ -15,22 +15,52 @@ Player::Player() {
     total = 0;
     status = 0;
     name = "";
+    gotA = 0;
+    increaseTotal = 0;
 }
 
 void Player::printHand() {
+    int handTotal = getHandTotal();
+
     cout << getName() << " hand: ";
     for (auto &c : hand)
         cout << c->toString() << " ";
-    cout << "Total:" << getHandTotal();
-    if (getHandTotal() == 21)
+
+    cout << "Total:";
+
+    if (gotA && increaseTotal && getHandTotal() != 21)
+        cout << handTotal - 10 << "/" << handTotal;
+    else
+        cout << handTotal;
+
+    if (handTotal == 21)
         cout << " BlackJack!";
+    else if (handTotal > 21)
+        cout << " You lost!";
     cout << endl;
 }
 
 int Player::getHandTotal() {
     total = 0;
-    for (auto &c : hand)
+    gotA = 0;
+    increaseTotal = 0;
+    for (auto &c : hand) {
         total += c->getNum();
+        if (c->getNum() == 1) {
+            gotA = 1;
+            if (total <= 11 && increaseTotal == 0) {
+                total += 10;
+                increaseTotal = 1;
+            }
+
+            if (total == BLACKJACK_LIMIT)
+                increaseTotal = 2;
+        }
+    }
+    if (total > 21 && increaseTotal) {
+        total -= 10;
+        increaseTotal = 0;
+    }
 
     return total;
 }
@@ -61,19 +91,20 @@ bool Player::getResult(int dealerHand) {
 void Player::hit(Card *pCard) {
     hand.push_back(pCard);
     total += pCard->getNum();
+
 }
 
 void Player::printResult() {
-    cout << getName() << " ";
     switch (status) {
         case -1:
-            cout << ", You lost!" << endl;
+            if (getHandTotal() < 21)
+                cout << getName() << ", You Lost!" << endl;
             break;
         case 0:
-            cout << ", It is a draw!" << endl;
+            cout << getName() << ", It is a draw!" << endl;
             break;
         case 1:
-            cout << ", You win!" << endl;
+            cout << getName() << ", You win!" << endl;
             break;
         default:
             break;
@@ -85,19 +116,23 @@ void Player::printResult() {
 
 void Player::setResults(int dealerTotal) {
 
-    if (dealerTotal > 21) {
+
+    if (getHandTotal() == 21) {    //Blackjack: player wins
         chips += 2 * getBet();
         status = 1;
-    } else if (getHandTotal() > 21) {
-        status = -1;
-    } else if (getHandTotal() == dealerTotal) {
+    } else if (getHandTotal() < 21 && getHandTotal() == dealerTotal) { // Draw
         chips += getBet();
         status = 0;
-    } else if (getHandTotal() > dealerTotal) {
+    } else if (getHandTotal() < 21 && getHandTotal() > dealerTotal) {   //player wins
+        chips += 2 * getBet();
+        status = 1;
+    } else if (getHandTotal() > 21) {                           // player busted
+        status = -1;
+    } else if (getHandTotal() < 21 && dealerTotal > 21) {       //dealer busted
         chips += 2 * getBet();
         status = 1;
     } else {
-        status = -1;
+        status = -1;                                            //should not be here!
     }
 
     currentBet = 0;
@@ -123,7 +158,7 @@ void Player::resetHand() {
         delete c;
     }
     hand.clear();
-
+    gotA = 0;
 }
 
 int Player::getBet() {
@@ -132,6 +167,9 @@ int Player::getBet() {
 
 void Player::play(Dealer *dealer) {
     char selection;
+
+    if (getHandTotal() >= 21)
+        return;
 
     if (getChipsTotal() + getBet()) {    //is player still on the game
         do {

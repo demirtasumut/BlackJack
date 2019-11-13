@@ -4,11 +4,12 @@
 
 #include "Deck.h"
 
+#define DECK_COUNT 7
 
 Card *Deck::getRandomCard() {
     Card *c = nullptr;
 
-    if (!cards.empty()) {
+    if (cards.empty()) {
         resetHand();
     }
 
@@ -26,11 +27,12 @@ void Deck::resetHand() {
         delete c;
     }
     cards.clear();
-
-    for (int f = HEARTS; f <= SPADES; f++) {
-        for (int i = 1; i <= 13; i++) {
-            c = new Card(i, (Face) f);
-            cards.push_back(c);
+    for (int i = 0; i < DECK_COUNT; i++) {
+        for (int f = HEARTS; f <= SPADES; f++) {
+            for (int i = 1; i <= 13; i++) {
+                c = new Card(i, (Face) f);
+                cards.push_back(c);
+            }
         }
     }
     shuffle(cards.begin(), cards.end(), std::mt19937(std::random_device()()));
@@ -39,10 +41,12 @@ void Deck::resetHand() {
 Deck::Deck() {
     Card *c;
 
-    for (int f = HEARTS; f <= SPADES; f++) {
-        for (int i = 1; i <= 13; i++) {
-            c = new Card(i, (Face) f);
-            cards.push_back(c);
+    for (int i = 0; i < DECK_COUNT; i++) {
+        for (int f = HEARTS; f <= SPADES; f++) {
+            for (int i = 1; i <= 13; i++) {
+                c = new Card(i, (Face) f);
+                cards.push_back(c);
+            }
         }
     }
     shuffle(cards.begin(), cards.end(), std::mt19937(std::random_device()()));
@@ -52,4 +56,5 @@ void Deck::testDeck() {
     for (auto &c : cards)
         cout << c->toString() << " ";
     cout << endl;
+    cout << "Dect size:" << cards.size() << endl;
 }
