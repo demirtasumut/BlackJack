@@ -18,6 +18,7 @@ public:
     void setCards(Player *pPlayers, int playerCount);
 
     int openHand();
+
     Card *getCard();
 
     void testDealer();

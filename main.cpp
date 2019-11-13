@@ -10,7 +10,7 @@ int main() {
     srand(unsigned(time(nullptr)));
     auto *blackJack = new BlackJack();
 
-    blackJack->play();
+    blackJack->start();
     delete blackJack;
 
     return 0;

@@ -24,13 +24,15 @@ private:
 public:
     BlackJack();
 
-    void play();
+    void start();
 
     void test();
 
     void printPlayersHand(int playerCount);
 
     void betPlayers(int count);
+
+    void resetPlayers(int playerCount);
 };
 
 

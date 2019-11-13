@@ -11,6 +11,8 @@
 
 using namespace std;
 
+class Dealer;
+
 class Player {
 private:
     int chips;
@@ -20,7 +22,6 @@ protected:
     string name;
     list<Card *> hand;
     int status;
-    void updateChips(int c);
 public:
     Player();
 
@@ -44,9 +45,11 @@ public:
 
     void resetHand();
 
-    void setBet(int b);
-
     int getBet();
+
+    void play(Dealer *dealer);
+
+    void reset();
 };
 
 

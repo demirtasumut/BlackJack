@@ -3,21 +3,28 @@
 //
 
 #include "Player.h"
+#include "Dealer.h"
 
 #define INITIAL_CHIPS 100
+#define BLACKJACK_LIMIT 21
+
 
 Player::Player() {
     chips = INITIAL_CHIPS;
     currentBet = 0;
     total = 0;
     status = 0;
+    name = "";
 }
 
 void Player::printHand() {
     cout << getName() << " hand: ";
     for (auto &c : hand)
         cout << c->toString() << " ";
-    cout << "Total:" << getHandTotal() << endl;
+    cout << "Total:" << getHandTotal();
+    if (getHandTotal() == 21)
+        cout << " BlackJack!";
+    cout << endl;
 }
 
 int Player::getHandTotal() {
@@ -29,7 +36,7 @@ int Player::getHandTotal() {
 }
 
 bool Player::bet(int b) {
-    if (getChipsTotal() < b)
+    if (getChipsTotal() < b || b <= 0)
         return false;
     currentBet = b;
     chips -= b;
@@ -57,19 +64,22 @@ void Player::hit(Card *pCard) {
 }
 
 void Player::printResult() {
-    cout << "Hi " << getName() << " ";
+    cout << getName() << " ";
     switch (status) {
         case -1:
-            cout << "You lost!" << endl;
+            cout << ", You lost!" << endl;
             break;
         case 0:
-            cout << "It is a draw!" << endl;
+            cout << ", It is a draw!" << endl;
             break;
         case 1:
-            cout << "You win!" << endl;
+            cout << ", You win!" << endl;
             break;
         default:
             break;
+    }
+    if (getChipsTotal() == 0) {
+        cout << "Sorry " << getName() << ". You are busted!!" << endl;
     }
 }
 
@@ -90,7 +100,7 @@ void Player::setResults(int dealerTotal) {
         status = -1;
     }
 
-    setBet(0);
+    currentBet = 0;
 }
 
 int Player::getChipsTotal() {
@@ -116,11 +126,38 @@ void Player::resetHand() {
 
 }
 
-void Player::setBet(int b) {
-    currentBet = b;
-}
-
 int Player::getBet() {
     return currentBet;
+}
+
+void Player::play(Dealer *dealer) {
+    char selection;
+
+    if (getChipsTotal() + getBet()) {    //is player still on the game
+        do {
+            selection = move("hHsS");
+            switch (selection) {
+                case 'h':
+                case 'H':
+                    hit(dealer->getCard());
+                    printHand();
+                    break;
+                case 's':
+                case 'S':
+                    break;
+                default:
+                    break;
+            }
+        } while (getHandTotal() < BLACKJACK_LIMIT && selection != 's' && selection != 'S');
+    }
+}
+
+void Player::reset() {
+    chips = INITIAL_CHIPS;
+    currentBet = 0;
+    total = 0;
+    status = 0;
+    name = "";
+    resetHand();
 }
 
