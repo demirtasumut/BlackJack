@@ -14,8 +14,9 @@ Steps:
 - add game logic (done)
     - hit and stands (done)
     - split
-    - double
+    - double (done)
     - insurance
+    - surrender (done)
 - implement console tricks.
     clean console
     game menu
