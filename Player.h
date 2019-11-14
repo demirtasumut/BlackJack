@@ -16,7 +16,17 @@ enum ACE {
     GOTACE,
     INCREASED,
     BJACKEWITHACE,
-    DECREASED
+    DECREASED,
+};
+
+// ToDo: implement state logic for player
+
+enum STATE {
+    PLAYING = 0,
+    SURRENDER,
+    BJ,
+    BUSTED,
+    OVER,
 };
 
 using namespace std;

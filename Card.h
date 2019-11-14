@@ -10,7 +10,7 @@
 
 using namespace std;
 enum Face {
-    HEARTS = 3,     //kupa
+    HEARTS = 0,     //kupa
     DIAMONDS,       //karo
     CLUB,           //sinek
     SPADES,         //maca
