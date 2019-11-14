@@ -16,8 +16,10 @@ using namespace std;
 class Deck {
 private:
     vector<Card *> cards;
+
 public:
     Deck();
+
     void resetHand();
 
     Card *getRandomCard();

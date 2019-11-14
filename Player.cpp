@@ -64,18 +64,23 @@ int Player::getHandTotal() {
 }
 
 bool Player::bet(int b) {
+
     if (getChipsTotal() < b || b <= 0)
         return false;
+
     currentBet = b;
     chips -= b;
+
     return true;
 }
 
 char Player::move(const string &letter) {
     cout << "Hi " << getName() << "! Hit(H), Stand(S), Double(D)";
+
     if (hand.size() == 2)
         cout << ", Surrender(R)";
     cout << ":";
+
     return utils::readSelection(letter);
 }
 

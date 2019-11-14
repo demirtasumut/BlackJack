@@ -52,6 +52,7 @@ void BlackJack::game() {
     cout << "How many players do want you play? (1-7):";
     selection = utils::readSelection("1234567");
     pCount = selection - '0';
+
     setPlayerCount(pCount);
     resetPlayers();
 
@@ -94,6 +95,7 @@ void BlackJack::test() {
 }
 
 void BlackJack::printPlayersHand() {
+
     for (int i = 0; i < getPlayerCount(); i++) {
         if (players[i].getChipsTotal() + players[i].getBet())    //is player still on the game
             players[i].printHand();
@@ -108,6 +110,7 @@ void BlackJack::betPlayers() {
             cout << "Hi " << players[i].getName() << "! How much you want to bet? (min 1, max "
                  << players[i].getChipsTotal() << "):";
             cin >> bet;
+
             while (!players[i].bet(bet)) {
                 cout << "Hi " << players[i].getName() << "! You can't bet " << bet << ". Please try again:";
                 cin.clear();
