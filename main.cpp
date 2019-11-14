@@ -7,7 +7,6 @@ using namespace std;
 
 int main() {
 
-    srand(unsigned(time(nullptr)));
     auto *blackJack = new BlackJack();
 
     blackJack->start();

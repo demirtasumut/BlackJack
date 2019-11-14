@@ -5,7 +5,9 @@
 #include "BlackJack.h"
 
 
-BlackJack::BlackJack() = default;
+BlackJack::BlackJack() {
+    playerCount = 0;
+}
 
 void BlackJack::start() {
     bool playGame = true;
@@ -42,16 +44,16 @@ void BlackJack::printGameInfo() {
 }
 
 void BlackJack::game() {
-    int playerCount, dealerHand = 0;
+    int pCount, dealerHand = 0;
     bool notFinish = false;
     char selection;
     string name;
 
     cout << "How many players do want you play? (1-7)" << endl;
     selection = utils::readSelection("1234567");
-    playerCount = selection - '0';
-
-    resetPlayers(playerCount);
+    pCount = selection - '0';
+    setPlayerCount(pCount);
+    resetPlayers();
 
     for (int i = 0; i < playerCount; i++) {
         cout << "Please enter Player" << i + 1 << " name:";
@@ -60,26 +62,26 @@ void BlackJack::game() {
     }
     do {
 
-        betPlayers(playerCount);
+        betPlayers();
 
         dealer.setCards(players, playerCount);
         dealer.printOneCard();
 
-        printPlayersHand(playerCount);
+        printPlayersHand();
 
         for (int i = 0; i < playerCount; i++) {
             players[i].play(&dealer);
 
         }
 
-        if (checPlayersStatus(playerCount))
+        if (checPlayersStatus())
             dealerHand = dealer.openHand();
 
         for (int i = 0; i < playerCount; i++) {
             notFinish |= players[i].getResult(dealerHand);
         }
         dealer.resetHand();
-        notFinish = checkForContinue(playerCount);
+        notFinish = checkForContinue();
 
 
     } while (notFinish);
@@ -92,14 +94,14 @@ void BlackJack::test() {
 
 }
 
-void BlackJack::printPlayersHand(int playerCount) {
+void BlackJack::printPlayersHand() {
     for (int i = 0; i < playerCount; i++) {
         if (players[i].getChipsTotal() + players[i].getBet())    //is player still on the game
             players[i].printHand();
     }
 }
 
-void BlackJack::betPlayers(int playerCount) {
+void BlackJack::betPlayers() {
     int bet;
 
     for (int i = 0; i < playerCount; i++) {
@@ -117,13 +119,13 @@ void BlackJack::betPlayers(int playerCount) {
     }
 }
 
-void BlackJack::resetPlayers(int playerCount) {
+void BlackJack::resetPlayers() {
     for (int i = 0; i < playerCount; i++) {
         players[i].reset();
     }
 }
 
-bool BlackJack::checPlayersStatus(int playerCount) {
+bool BlackJack::checPlayersStatus() {
     bool status = false;
     for (int i = 0; i < playerCount; i++) {
         status |= (players[i].getHandTotal() < 21 && players[i].getHandTotal() > 0);
@@ -131,7 +133,7 @@ bool BlackJack::checPlayersStatus(int playerCount) {
     return status;
 }
 
-bool BlackJack::checkForContinue(int playerCount) {
+bool BlackJack::checkForContinue() {
     bool notFinish = false;
     char selection;
 
@@ -146,4 +148,12 @@ bool BlackJack::checkForContinue(int playerCount) {
         cout << "Game over!" << endl;
     }
     return notFinish;
+}
+
+int BlackJack::getPlayerCount() const {
+    return playerCount;
+}
+
+void BlackJack::setPlayerCount(int playerCount) {
+    BlackJack::playerCount = playerCount;
 }
