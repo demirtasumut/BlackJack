@@ -27,6 +27,7 @@ class Player {
 private:
     int chips;
     int currentBet;
+    bool doubled;
 protected:
     string name;
     list<Card *> hand;
@@ -47,7 +48,9 @@ public:
 
     void hit(Card *pCard);
 
-    void split();
+    void splitHand();
+
+    void doubleDeal();
 
     void printResult();
 
