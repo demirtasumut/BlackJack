@@ -6,13 +6,12 @@
 #include "Dealer.h"
 
 #define INITIAL_CHIPS 100
-#define BLACKJACK_LIMIT 21
+#define BLACKJACK 21
 
 
 Player::Player() {
     chips = INITIAL_CHIPS;
     currentBet = 0;
-    total = 0;
     status = 0;
     name = "";
     gotA = 0;
@@ -28,20 +27,17 @@ void Player::printHand() {
 
     cout << "Total:";
 
-    if (gotA && increaseTotal && getHandTotal() != 21)
-        cout << handTotal - 10 << "/" << handTotal;
-    else
-        cout << handTotal;
+    printHandTotal();
 
-    if (handTotal == 21)
+    if (handTotal == BLACKJACK)
         cout << " BlackJack!";
-    else if (handTotal > 21)
+    else if (handTotal > BLACKJACK)
         cout << " You lost!";
     cout << endl;
 }
 
 int Player::getHandTotal() {
-    total = 0;
+    int total = 0;
     gotA = 0;
     increaseTotal = 0;
     for (auto &c : hand) {
@@ -53,11 +49,11 @@ int Player::getHandTotal() {
                 increaseTotal = 1;
             }
 
-            if (total == BLACKJACK_LIMIT)
+            if (total == BLACKJACK)
                 increaseTotal = 2;
         }
     }
-    if (total > 21 && increaseTotal) {
+    if (total > BLACKJACK && increaseTotal) {
         total -= 10;
         increaseTotal = 0;
     }
@@ -80,7 +76,6 @@ char Player::move(const string &letter) {
 
 bool Player::getResult(int dealerHand) {
 
-
     setResults(dealerHand);
     printResult();
     resetHand();
@@ -88,16 +83,23 @@ bool Player::getResult(int dealerHand) {
     return getChipsTotal() > 0;
 }
 
+void Player::printHandTotal() {
+    int handTotal = getHandTotal();
+
+    if (gotA && increaseTotal && handTotal != BLACKJACK)
+        cout << handTotal - 10 << "/" << handTotal;
+    else
+        cout << handTotal;
+}
+
 void Player::hit(Card *pCard) {
     hand.push_back(pCard);
-    total += pCard->getNum();
-
 }
 
 void Player::printResult() {
     switch (status) {
         case -1:
-            if (getHandTotal() < 21)
+            if (getHandTotal() < BLACKJACK)
                 cout << getName() << ", You Lost!" << endl;
             break;
         case 0:
@@ -117,18 +119,18 @@ void Player::printResult() {
 void Player::setResults(int dealerTotal) {
 
 
-    if (getHandTotal() == 21) {    //Blackjack: player wins
+    if (getHandTotal() == BLACKJACK) {    //Blackjack: player wins
         chips += 2 * getBet();
         status = 1;
-    } else if (getHandTotal() < 21 && getHandTotal() == dealerTotal) { // Draw
+    } else if (getHandTotal() < BLACKJACK && getHandTotal() == dealerTotal) { // Draw
         chips += getBet();
         status = 0;
-    } else if (getHandTotal() < 21 && getHandTotal() > dealerTotal) {   //player wins
+    } else if (getHandTotal() < BLACKJACK && getHandTotal() > dealerTotal) {   //player wins
         chips += 2 * getBet();
         status = 1;
-    } else if (getHandTotal() > 21) {                           // player busted
+    } else if (getHandTotal() > BLACKJACK) {                           // player busted
         status = -1;
-    } else if (getHandTotal() < 21 && dealerTotal > 21) {       //dealer busted
+    } else if (getHandTotal() < BLACKJACK && dealerTotal > BLACKJACK) {       //dealer busted
         chips += 2 * getBet();
         status = 1;
     } else {
@@ -168,7 +170,7 @@ int Player::getBet() {
 void Player::play(Dealer *dealer) {
     char selection;
 
-    if (getHandTotal() >= 21)
+    if (getHandTotal() >= BLACKJACK)
         return;
 
     if (getChipsTotal() + getBet()) {    //is player still on the game
@@ -186,14 +188,13 @@ void Player::play(Dealer *dealer) {
                 default:
                     break;
             }
-        } while (getHandTotal() < BLACKJACK_LIMIT && selection != 's' && selection != 'S');
+        } while (getHandTotal() < BLACKJACK && selection != 's' && selection != 'S');
     }
 }
 
 void Player::reset() {
     chips = INITIAL_CHIPS;
     currentBet = 0;
-    total = 0;
     status = 0;
     name = "";
     resetHand();

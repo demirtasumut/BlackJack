@@ -73,7 +73,7 @@ void BlackJack::game() {
 
         }
 
-        if (checkPlayersStatus())
+        if (checkPlayersStillOnTheGame())
             dealerHand = dealer.openHand();
 
         for (int i = 0; i < getPlayerCount(); i++) {
@@ -124,7 +124,7 @@ void BlackJack::resetPlayers() {
     }
 }
 
-bool BlackJack::checkPlayersStatus() {
+bool BlackJack::checkPlayersStillOnTheGame() {
     bool status = false;
     for (int i = 0; i < getPlayerCount(); i++) {
         status |= (players[i].getHandTotal() < 21 && players[i].getHandTotal() > 0);

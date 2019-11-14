@@ -23,3 +23,4 @@ Steps:
     settings menu
 - implement saving games
 - implement player records.
+- support multi-languages for game play

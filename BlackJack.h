@@ -41,7 +41,7 @@ public:
 
     void resetPlayers();
 
-    bool checkPlayersStatus();
+    bool checkPlayersStillOnTheGame();
 
     bool checkForContinue();
 };
