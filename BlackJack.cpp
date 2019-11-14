@@ -15,7 +15,7 @@ void BlackJack::start() {
     this->printGameInfo();
 
     do {
-        cout << "New Game(N) or Exit(X)" << endl;
+        cout << "New Game(N) or Exit(X):";
         char c = utils::readSelection("NnXxt");
 
         switch (c) {
@@ -49,7 +49,7 @@ void BlackJack::game() {
     char selection;
     string name;
 
-    cout << "How many players do want you play? (1-7)" << endl;
+    cout << "How many players do want you play? (1-7):";
     selection = utils::readSelection("1234567");
     pCount = selection - '0';
     setPlayerCount(pCount);
@@ -109,7 +109,7 @@ void BlackJack::betPlayers() {
                  << players[i].getChipsTotal() << "):";
             cin >> bet;
             while (!players[i].bet(bet)) {
-                cout << "Hi " << players[i].getName() << "! You can't bet " << bet << ". Please try again";
+                cout << "Hi " << players[i].getName() << "! You can't bet " << bet << ". Please try again:";
                 cin.clear();
                 cin.ignore(1);
                 cin >> bet;
@@ -127,7 +127,7 @@ void BlackJack::resetPlayers() {
 bool BlackJack::checkPlayersStillOnTheGame() {
     bool status = false;
     for (int i = 0; i < getPlayerCount(); i++) {
-        status |= (players[i].getHandTotal() < 21 && players[i].getHandTotal() > 0);
+        status |= (players[i].getHandTotal() <= 21 && players[i].getHandTotal() > 0);
     }
     return status;
 }
@@ -140,7 +140,7 @@ bool BlackJack::checkForContinue() {
         notFinish |= players[i].getChipsTotal() != 0;
     }
     if (notFinish) {
-        cout << "Do you want to continue? (Y/N)" << endl;
+        cout << "Do you want to continue? (Y/N):";
         selection = utils::readSelection("yYnN");
         notFinish = !(selection == 'n' || selection == 'N');
     } else {
