@@ -55,29 +55,28 @@ void BlackJack::game() {
     setPlayerCount(pCount);
     resetPlayers();
 
-    for (int i = 0; i < playerCount; i++) {
+    for (int i = 0; i < getPlayerCount(); i++) {
         cout << "Please enter Player" << i + 1 << " name:";
         cin >> name;
         players[i].setName(name);
     }
+
     do {
-
         betPlayers();
-
-        dealer.setCards(players, playerCount);
+        dealer.setCards(players, getPlayerCount());
         dealer.printOneCard();
 
         printPlayersHand();
 
-        for (int i = 0; i < playerCount; i++) {
+        for (int i = 0; i < getPlayerCount(); i++) {
             players[i].play(&dealer);
 
         }
 
-        if (checPlayersStatus())
+        if (checkPlayersStatus())
             dealerHand = dealer.openHand();
 
-        for (int i = 0; i < playerCount; i++) {
+        for (int i = 0; i < getPlayerCount(); i++) {
             notFinish |= players[i].getResult(dealerHand);
         }
         dealer.resetHand();
@@ -95,7 +94,7 @@ void BlackJack::test() {
 }
 
 void BlackJack::printPlayersHand() {
-    for (int i = 0; i < playerCount; i++) {
+    for (int i = 0; i < getPlayerCount(); i++) {
         if (players[i].getChipsTotal() + players[i].getBet())    //is player still on the game
             players[i].printHand();
     }
@@ -104,7 +103,7 @@ void BlackJack::printPlayersHand() {
 void BlackJack::betPlayers() {
     int bet;
 
-    for (int i = 0; i < playerCount; i++) {
+    for (int i = 0; i < getPlayerCount(); i++) {
         if (players[i].getChipsTotal()) {  //if player has still chips
             cout << "Hi " << players[i].getName() << "! How much you want to bet? (min 1, max "
                  << players[i].getChipsTotal() << "):";
@@ -120,14 +119,14 @@ void BlackJack::betPlayers() {
 }
 
 void BlackJack::resetPlayers() {
-    for (int i = 0; i < playerCount; i++) {
+    for (int i = 0; i < getPlayerCount(); i++) {
         players[i].reset();
     }
 }
 
-bool BlackJack::checPlayersStatus() {
+bool BlackJack::checkPlayersStatus() {
     bool status = false;
-    for (int i = 0; i < playerCount; i++) {
+    for (int i = 0; i < getPlayerCount(); i++) {
         status |= (players[i].getHandTotal() < 21 && players[i].getHandTotal() > 0);
     }
     return status;
@@ -137,7 +136,7 @@ bool BlackJack::checkForContinue() {
     bool notFinish = false;
     char selection;
 
-    for (int i = 0; i < playerCount; i++) {
+    for (int i = 0; i < getPlayerCount(); i++) {
         notFinish |= players[i].getChipsTotal() != 0;
     }
     if (notFinish) {
