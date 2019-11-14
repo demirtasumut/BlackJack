@@ -71,6 +71,8 @@ public:
     void reset();
 
     void printHandTotal();
+
+    void surrender();
 };
 
 

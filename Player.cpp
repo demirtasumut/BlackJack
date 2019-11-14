@@ -72,7 +72,10 @@ bool Player::bet(int b) {
 }
 
 char Player::move(const string &letter) {
-    cout << "Hi " << getName() << "! Hit(H), Stand(S), Double(D):";
+    cout << "Hi " << getName() << "! Hit(H), Stand(S), Double(D)";
+    if (hand.size() == 2)
+        cout << ", Surrender(R)";
+    cout << ":";
     return utils::readSelection(letter);
 }
 
@@ -101,14 +104,17 @@ void Player::hit(Card *pCard) {
 void Player::printResult() {
     switch (status) {
         case -1:
-            if (getHandTotal() < BLACKJACK)
-                cout << getName() << ", You Lost!" << endl;
+            //if (getHandTotal() < BLACKJACK)
+            cout << getName() << ", You Lost!" << endl;
             break;
         case 0:
             cout << getName() << ", It is a draw!" << endl;
             break;
         case 1:
             cout << getName() << ", You win!" << endl;
+            break;
+        case 2:
+            cout << getName() << ", You surrender!" << endl;
             break;
         default:
             break;
@@ -120,8 +126,9 @@ void Player::printResult() {
 
 void Player::setResults(int dealerTotal) {
 
-
-    if (getHandTotal() == BLACKJACK && dealerTotal != BLACKJACK) {    //Blackjack: player wins
+    if (getBet() == 0) {
+        status = 2;
+    } else if (getHandTotal() == BLACKJACK && dealerTotal != BLACKJACK) {    //Blackjack: player wins
         chips += ceil(2.5 * getBet());
         status = 1;
     } else if (getHandTotal() <= BLACKJACK && getHandTotal() == dealerTotal) { // Draw
@@ -173,12 +180,12 @@ int Player::getBet() {
 void Player::play(Dealer *dealer) {
     char selection;
 
-    if (getHandTotal() >= BLACKJACK)
+    if (getHandTotal() >= BLACKJACK && getBet() > 0)
         return;
 
     if (getChipsTotal() + getBet() || !doubled) {    //is player still on the game
         do {
-            selection = move("hHsSdD");
+            selection = move("hHsSdDrR");
             switch (selection) {
 
                 case 'd':
@@ -192,10 +199,14 @@ void Player::play(Dealer *dealer) {
                 case 's':
                 case 'S':
                     break;
+                case 'r':
+                case 'R':
+                    surrender();
+                    break;
                 default:
                     break;
             }
-        } while (getHandTotal() < BLACKJACK && selection != 's' && selection != 'S' && !doubled);
+        } while (getHandTotal() < BLACKJACK && selection != 's' && selection != 'S' && !doubled && getBet() > 0);
     }
 }
 
@@ -217,5 +228,10 @@ void Player::doubleDeal() {
 
 void Player::splitHand() {
 
+}
+
+void Player::surrender() {
+    chips += ceil(currentBet / 2.0);
+    currentBet = 0;
 }
 
