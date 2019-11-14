@@ -127,7 +127,7 @@ void BlackJack::resetPlayers() {
 bool BlackJack::checkPlayersStillOnTheGame() {
     bool status = false;
     for (int i = 0; i < getPlayerCount(); i++) {
-        status |= (players[i].getHandTotal() < 21 && players[i].getHandTotal() > 0);
+        status |= (players[i].getHandTotal() <= 21 && players[i].getHandTotal() > 0);
     }
     return status;
 }

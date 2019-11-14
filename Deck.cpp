@@ -4,7 +4,7 @@
 
 #include "Deck.h"
 
-#define DECK_COUNT 7
+#define DECK_COUNT 8
 
 Card *Deck::getRandomCard() {
     Card *c = nullptr;
@@ -27,7 +27,7 @@ void Deck::resetHand() {
         delete c;
     }
     cards.clear();
-    for (int i = 0; i < DECK_COUNT; i++) {
+    for (int j = 0; j < DECK_COUNT; j++) {
         for (int f = HEARTS; f <= SPADES; f++) {
             for (int i = 1; i <= 13; i++) {
                 c = new Card(i, (Face) f);
@@ -41,7 +41,7 @@ void Deck::resetHand() {
 Deck::Deck() {
     Card *c;
 
-    for (int i = 0; i < DECK_COUNT; i++) {
+    for (int j = 0; j < DECK_COUNT; j++) {
         for (int f = HEARTS; f <= SPADES; f++) {
             for (int i = 1; i <= 13; i++) {
                 c = new Card(i, (Face) f);
@@ -56,5 +56,5 @@ void Deck::testDeck() {
     for (auto &c : cards)
         cout << c->toString() << " ";
     cout << endl;
-    cout << "Dect size:" << cards.size() << endl;
+    cout << "Deck size:" << cards.size() << endl;
 }

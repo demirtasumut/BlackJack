@@ -9,6 +9,16 @@
 #include <list>
 #include "Card.h"
 
+#define BLACKJACK 21
+
+enum ACE {
+    NOACE = 0,
+    GOTACE,
+    INCREASED,
+    BJACKEWITHACE,
+    DECREASED
+};
+
 using namespace std;
 
 class Dealer;
@@ -21,8 +31,7 @@ protected:
     string name;
     list<Card *> hand;
     int status;
-    int gotA;
-    int increaseTotal;
+    ACE ace;
 public:
     Player();
 

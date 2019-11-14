@@ -24,7 +24,12 @@ int Dealer::openHand() {
         cout << c->toString() << " " << flush;
         this_thread::sleep_for(timespan);   //make it handsome :)
     }
-    cout << "Total: " << getHandTotal() << endl;
+    cout << "Total: " << getHandTotal();
+
+    if (getHandTotal() == BLACKJACK)
+        cout << " BlackJack";
+
+    cout << endl;
     return getHandTotal();
 }
 

@@ -6,7 +6,6 @@
 #include "Dealer.h"
 
 #define INITIAL_CHIPS 100
-#define BLACKJACK 21
 
 
 Player::Player() {
@@ -14,8 +13,7 @@ Player::Player() {
     currentBet = 0;
     status = 0;
     name = "";
-    gotA = 0;
-    increaseTotal = 0;
+    ace = NOACE;
 }
 
 void Player::printHand() {
@@ -32,30 +30,30 @@ void Player::printHand() {
     if (handTotal == BLACKJACK)
         cout << " BlackJack!";
     else if (handTotal > BLACKJACK)
-        cout << " You lost!";
+        cout << " You are busted!";
     cout << endl;
 }
 
 int Player::getHandTotal() {
     int total = 0;
-    gotA = 0;
-    increaseTotal = 0;
+    ace = NOACE;
     for (auto &c : hand) {
         total += c->getNum();
         if (c->getNum() == 1) {
-            gotA = 1;
-            if (total <= 11 && increaseTotal == 0) {
+            ace = GOTACE;
+            if (total <= 11 && ace != INCREASED) {
                 total += 10;
-                increaseTotal = 1;
+                ace = INCREASED;
             }
+        }
 
-            if (total == BLACKJACK)
-                increaseTotal = 2;
+        if (total == BLACKJACK && ace == INCREASED) {
+            ace = BJACKEWITHACE;
         }
     }
-    if (total > BLACKJACK && increaseTotal) {
+    if (total > BLACKJACK && ace == INCREASED) {
         total -= 10;
-        increaseTotal = 0;
+        ace = DECREASED;
     }
 
     return total;
@@ -86,7 +84,7 @@ bool Player::getResult(int dealerHand) {
 void Player::printHandTotal() {
     int handTotal = getHandTotal();
 
-    if (gotA && increaseTotal && handTotal != BLACKJACK)
+    if (ace == INCREASED)
         cout << handTotal - 10 << "/" << handTotal;
     else
         cout << handTotal;
@@ -119,10 +117,10 @@ void Player::printResult() {
 void Player::setResults(int dealerTotal) {
 
 
-    if (getHandTotal() == BLACKJACK) {    //Blackjack: player wins
-        chips += 2 * getBet();
+    if (getHandTotal() == BLACKJACK && dealerTotal != BLACKJACK) {    //Blackjack: player wins
+        chips += ceil(2.5 * getBet());
         status = 1;
-    } else if (getHandTotal() < BLACKJACK && getHandTotal() == dealerTotal) { // Draw
+    } else if (getHandTotal() <= BLACKJACK && getHandTotal() == dealerTotal) { // Draw
         chips += getBet();
         status = 0;
     } else if (getHandTotal() < BLACKJACK && getHandTotal() > dealerTotal) {   //player wins
@@ -160,7 +158,7 @@ void Player::resetHand() {
         delete c;
     }
     hand.clear();
-    gotA = 0;
+    ace = NOACE;
 }
 
 int Player::getBet() {
@@ -198,5 +196,9 @@ void Player::reset() {
     status = 0;
     name = "";
     resetHand();
+}
+
+void Player::split() {
+
 }
 
