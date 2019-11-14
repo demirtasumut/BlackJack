@@ -17,6 +17,13 @@ class BlackJack {
 private:
     Player players[MAX_PLAYER_COUNT];
     Dealer dealer;
+    int playerCount;
+
+    int getPlayerCount() const;
+
+    void setPlayerCount(int playerCount);
+
+private:
 
     void printGameInfo();
     void game();
@@ -28,15 +35,15 @@ public:
 
     void test();
 
-    void printPlayersHand(int playerCount);
+    void printPlayersHand();
 
-    void betPlayers(int count);
+    void betPlayers();
 
-    void resetPlayers(int playerCount);
+    void resetPlayers();
 
-    bool checPlayersStatus(int playerCount);
+    bool checkPlayersStillOnTheGame();
 
-    bool checkForContinue(int playerCount);
+    bool checkForContinue();
 };
 
 

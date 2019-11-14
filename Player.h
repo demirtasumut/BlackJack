@@ -17,7 +17,6 @@ class Player {
 private:
     int chips;
     int currentBet;
-    int total;
 protected:
     string name;
     list<Card *> hand;
@@ -30,11 +29,17 @@ public:
     char move(const string &letter);
 
     int getHandTotal();
+
     void printHand();
 
     bool bet(int b);
+
     bool getResult(int dealerHand);
+
     void hit(Card *pCard);
+
+    void split();
+
     void printResult();
 
     void setResults(int i);
@@ -43,7 +48,7 @@ public:
 
     string getName();
 
-    void setName(string basicString);
+    void setName(string n);
 
     void resetHand();
 
@@ -52,6 +57,8 @@ public:
     void play(Dealer *dealer);
 
     void reset();
+
+    void printHandTotal();
 };
 
 
